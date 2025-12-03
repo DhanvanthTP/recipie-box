@@ -3,6 +3,7 @@ import RecipeFinder from '../components/RecipeFinder.svelte';
 import CustomCursor from '../components/CustomCursor.svelte';
 import Chatbot from '../components/Chatbot.svelte';
 import YouTubeSummarizer from '../components/YouTubeSummarizer.svelte';
+import FeaturesHub from '../components/FeaturesHub.svelte';
 
 const title = "Voice-to-Recipe AI";
 const description = "An AI-powered recipe finder that suggests meals based on your voice commands or text queries.";
@@ -17,13 +18,14 @@ const description = "An AI-powered recipe finder that suggests meals based on yo
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <title>{title}</title>
 	</head>
-	<body>
+	<body style="background-image: url('/noise.png');">
         <CustomCursor client:load />
 
 		<main>
 			<RecipeFinder client:load />
 		</main>
 
+        <FeaturesHub client:load />
         <Chatbot client:load />
         <YouTubeSummarizer client:load />
 	</body>
