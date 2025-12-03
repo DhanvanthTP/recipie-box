@@ -1,6 +1,6 @@
 
 <script>
-  import { onMount, createEventDispatcher } from 'svelte';
+  import { onMount } from 'svelte';
   import { fly, fade } from 'svelte/transition';
 
   let recognition;
@@ -14,87 +14,96 @@
     // Breakfast
     {
       name: 'Poha',
-      ingredients: ['Flattened Rice', 'Onion', 'Peanuts', 'Turmeric', 'Lemon'],
-      description: 'A light and fluffy breakfast dish from Maharashtra, made with flattened rice, spices, and peanuts.',
-      keywords: ['breakfast', 'poha', 'indian', 'vegetarian', 'quick', 'light']
+      ingredients: ['Flattened Rice', 'Onion', 'Peanuts', 'Turmeric', 'Lemon', 'Curry Leaves'],
+      description: 'A light and fluffy breakfast dish from Maharashtra. To make, sauté onions, mustard seeds, and curry leaves. Add soaked poha, turmeric, and peanuts. Cook until heated through and garnish with fresh cilantro and a squeeze of lemon.',
+      keywords: ['breakfast', 'poha', 'indian', 'vegetarian', 'quick', 'light', 'maharashtrian', 'flattened rice'],
+      color: '#FFD700' // Gold
     },
     {
       name: 'Aloo Paratha',
-      ingredients: ['Whole Wheat Flour', 'Potatoes', 'Spices', 'Ghee', 'Cilantro'],
-      description: 'A popular North Indian breakfast of unleavened flatbread stuffed with a spiced potato mixture.',
-      keywords: ['breakfast', 'paratha', 'potato', 'aloo', 'indian', 'north indian', 'vegetarian']
+      ingredients: ['Whole Wheat Flour', 'Potatoes', 'Garam Masala', 'Ghee', 'Cilantro', 'Green Chilies'],
+      description: 'A popular North Indian breakfast of unleavened flatbread stuffed with a spiced potato mixture. Knead a soft dough. For the filling, mash boiled potatoes with garam masala, chilies, and cilantro. Roll out the dough, stuff with the filling, and pan-fry with ghee until golden brown.',
+      keywords: ['breakfast', 'paratha', 'potato', 'aloo', 'indian', 'north indian', 'punjabi', 'vegetarian', 'flatbread'],
+      color: '#FFA07A' // Light Salmon
     },
     {
       name: 'Masala Dosa',
-      ingredients: ['Rice', 'Lentils', 'Potato', 'Onion', 'Spices'],
-      description: 'A crispy, savory crepe from South India, filled with a delicious spiced potato filling.',
-      keywords: ['breakfast', 'dosa', 'masala dosa', 'south indian', 'vegetarian', 'crispy']
+      ingredients: ['Rice', 'Urad Dal', 'Potato', 'Onion', 'Turmeric', 'Sambar'],
+      description: 'A crispy, savory crepe from South India, filled with a delicious spiced potato filling. The batter is made from fermented rice and lentils. The filling is a simple sauté of boiled potatoes, onions, and spices. Cook the dosa on a hot griddle until crisp and golden.',
+      keywords: ['breakfast', 'dosa', 'masala dosa', 'south indian', 'vegetarian', 'crispy', 'fermented', 'gluten-free'],
+      color: '#FF7F50' // Coral
     },
 
     // Lunch
     {
       name: 'Palak Paneer',
-      ingredients: ['Spinach', 'Paneer', 'Onion', 'Tomato', 'Spices'],
-      description: 'A classic vegetarian dish with soft paneer cubes in a creamy, mildly spiced spinach gravy.',
-      keywords: ['lunch', 'dinner', 'palak paneer', 'paneer', 'spinach', 'vegetarian', 'curry']
+      ingredients: ['Spinach', 'Paneer', 'Onion', 'Tomato', 'Ginger-Garlic Paste', 'Cream'],
+      description: 'A classic vegetarian dish with soft paneer cubes in a creamy, mildly spiced spinach gravy. Blanch and puree spinach. Sauté onions, ginger, and garlic, then add tomatoes and spices. Stir in the spinach puree and cream, then add paneer cubes and simmer.',
+      keywords: ['lunch', 'dinner', 'palak paneer', 'paneer', 'spinach', 'vegetarian', 'curry', 'north indian', 'creamy'],
+      color: '#3CB371' // Medium Sea Green
     },
     {
       name: 'Chole Bhature',
-      ingredients: ['Chickpeas', 'Flour', 'Yogurt', 'Spices', 'Tomato'],
-      description: 'A spicy chickpea curry served with fluffy, deep-fried bread. A hearty and beloved meal from Punjab.',
-      keywords: ['lunch', 'dinner', 'chole bhature', 'chickpea', 'punjabi', 'indian']
+      ingredients: ['Chickpeas', 'All-Purpose Flour', 'Yogurt', 'Onion', 'Tomato', 'Spices'],
+      description: 'A spicy chickpea curry served with fluffy, deep-fried bread. A hearty and beloved meal from Punjab. The chole (chickpea curry) is simmered in a tangy tomato-onion gravy. The bhature are made from a leavened dough, deep-fried until they puff up.',
+      keywords: ['lunch', 'dinner', 'chole bhature', 'chickpea', 'punjabi', 'indian', 'spicy', 'fried bread'],
+      color: '#CD853F' // Peru
     },
     {
       name: 'Biryani',
-      ingredients: ['Basmati Rice', 'Chicken/Mutton/Veg', 'Yogurt', 'Saffron', 'Spices'],
-      description: 'A fragrant and flavorful rice dish with layers of meat or vegetables, cooked with aromatic spices.',
-      keywords: ['lunch', 'dinner', 'biryani', 'rice', 'chicken', 'mutton', 'indian']
+      ingredients: ['Basmati Rice', 'Chicken/Mutton/Veg', 'Yogurt', 'Saffron', 'Fried Onions', 'Mint'],
+      description: 'A fragrant and flavorful rice dish with layers of marinated meat or vegetables, cooked with aromatic spices. Marinate the meat/veg in yogurt and spices. Layer it with partially cooked rice, fried onions, and mint. Cook on low heat (dum) until everything is tender and fragrant.',
+      keywords: ['lunch', 'dinner', 'biryani', 'rice', 'chicken', 'mutton', 'indian', 'mughlai', 'dum'],
+      color: '#B8860B' // Dark Goldenrod
     },
 
     // Dinner
     {
-      name: 'Butter Chicken',
-      ingredients: ['Chicken', 'Tomato', 'Butter', 'Cream', 'Cashews'],
-      description: 'A rich and creamy curry with tender tandoori chicken in a buttery tomato sauce. A global favorite.',
-      keywords: ['dinner', 'butter chicken', 'chicken', 'curry', 'punjabi', 'north indian']
+      name: 'Butter Chicken (Murgh Makhani)',
+      ingredients: ['Chicken', 'Tomato Puree', 'Butter', 'Cream', 'Cashews', 'Fenugreek Leaves (Kasoori Methi)'],
+      description: 'A rich and creamy curry with tender tandoori chicken in a buttery tomato sauce. A global favorite. Marinate and grill the chicken. The sauce is a smooth blend of tomato puree, cashew paste, butter, cream, and aromatic spices like kasoori methi.',
+      keywords: ['dinner', 'butter chicken', 'murgh makhani', 'chicken', 'curry', 'punjabi', 'north indian', 'creamy', 'tandoori'],
+      color: '#E9967A' // Dark Salmon
     },
     {
       name: 'Dal Makhani',
-      ingredients: ['Black Lentils', 'Kidney Beans', 'Butter', 'Cream', 'Tomato'],
-      description: 'A creamy, slow-cooked lentil dish from Punjab, known for its rich texture and flavor.',
-      keywords: ['dinner', 'dal makhani', 'dal', 'lentils', 'vegetarian', 'punjabi']
+      ingredients: ['Black Lentils (Urad)', 'Kidney Beans (Rajma)', 'Butter', 'Cream', 'Tomato', 'Ginger'],
+      description: 'A creamy, slow-cooked lentil dish from Punjab, known for its rich texture and flavor. The lentils and beans are simmered overnight, then cooked with tomato puree, ginger, garlic, and a generous amount of butter and cream for its characteristic richness.',
+      keywords: ['dinner', 'dal makhani', 'dal', 'lentils', 'vegetarian', 'punjabi', 'creamy', 'slow-cooked'],
+      color: '#8B4513' // Saddle Brown
     },
     {
       name: 'Rogan Josh',
-      ingredients: ['Lamb/Mutton', 'Yogurt', 'Fennel Seeds', 'Ginger', 'Spices'],
-      description: 'An aromatic lamb curry from Kashmir with a rich, red gravy and fall-off-the-bone meat.',
-      keywords: ['dinner', 'rogan josh', 'lamb', 'mutton', 'curry', 'kashmiri']
+      ingredients: ['Lamb/Mutton', 'Yogurt', 'Fennel Seeds', 'Ginger Powder', 'Kashmiri Red Chili'],
+      description: 'An aromatic lamb curry from Kashmir with a rich, red gravy and fall-off-the-bone meat. The distinct red color comes from Kashmiri red chilies. The curry is flavored with aromatic spices like fennel and ginger powder, and has a yogurt-based gravy.',
+      keywords: ['dinner', 'rogan josh', 'lamb', 'mutton', 'curry', 'kashmiri', 'spicy', 'aromatic'],
+      color: '#A52A2A' // Brown
     },
 
     // Chaat (Snacks)
     {
-      name: 'Pani Puri / Golgappa',
-      ingredients: ['Semolina', 'Potatoes', 'Chickpeas', 'Tamarind', 'Mint'],
-      description: 'A popular street food snack consisting of hollow, crispy balls filled with spicy tamarind water and fillings.',
-      keywords: ['chaat', 'snack', 'pani puri', 'golgappa', 'street food', 'vegetarian']
+      name: 'Pani Puri (Golgappa)',
+      ingredients: ['Semolina (Sooji)', 'Potatoes', 'Chickpeas', 'Tamarind Chutney', 'Mint-Coriander Water'],
+      description: 'A popular street food snack consisting of hollow, crispy balls filled with spicy tamarind water, potatoes, and chickpeas. It's a burst of flavors and textures in every bite! The fun is in eating them whole.',
+      keywords: ['chaat', 'snack', 'pani puri', 'golgappa', 'street food', 'vegetarian', 'spicy', 'tangy'],
+      color: '#4682B4' // Steel Blue
     },
     {
       name: 'Samosa Chaat',
-      ingredients: ['Samosa', 'Yogurt', 'Tamarind Chutney', 'Mint Chutney', 'Onion'],
-      description: 'Crushed samosas topped with yogurt, chutneys, and spices. A delicious and tangy explosion of flavors.',
-      keywords: ['chaat', 'snack', 'samosa', 'street food', 'vegetarian']
+      ingredients: ['Samosa', 'Yogurt', 'Tamarind Chutney', 'Mint Chutney', 'Onion', 'Sev'],
+      description: 'Crushed samosas topped with chilled yogurt, tangy tamarind chutney, spicy mint chutney, onions, and crispy sev. It's a delicious and chaotic explosion of flavors, textures, and temperatures.',
+      keywords: ['chaat', 'snack', 'samosa', 'street food', 'vegetarian', 'tangy', 'yogurt'],
+      color: '#DAA520' // Goldenrod
     },
     {
       name: 'Bhel Puri',
-      ingredients: ['Puffed Rice', 'Onion', 'Tomato', 'Tamarind Chutney', 'Sev'],
-      description: 'A savory and tangy snack made with puffed rice, vegetables, and a mix of chutneys.',
-      keywords: ['chaat', 'snack', 'bhel puri', 'street food', 'vegetarian', 'light']
+      ingredients: ['Puffed Rice', 'Onion', 'Tomato', 'Tamarind Chutney', 'Potatoes', 'Sev'],
+      description: 'A savory and tangy snack made with puffed rice, chopped onions, potatoes, tomatoes, and a mix of sweet and spicy chutneys. It is a light, crunchy, and refreshing snack, perfect for evenings.',
+      keywords: ['chaat', 'snack', 'bhel puri', 'street food', 'vegetarian', 'light', 'puffed rice', 'mumbai'],
+      color: '#F4A460' // Sandy Brown
     }
 ];
-
-
-  const dessertRecipes = indianRecipes.filter(r => r.keywords.includes('dessert')); // Will be empty now, but logic remains
-
+\
   onMount(() => {
     allRecipesMaster = [...indianRecipes];
     recipes = allRecipesMaster;
@@ -150,8 +159,7 @@
         return;
     }
 
-    const foundRecipes = allRecipesMaster.filter(recipe => 
-      recipe.keywords.some(kw => lowerText.includes(kw))
+    const foundRecipes = allRecipesMaster.filter(recipe =>       recipe.keywords.some(kw => lowerText.includes(kw)) || recipe.name.toLowerCase().includes(lowerText)
     );
 
     if (foundRecipes.length > 0) {
@@ -295,11 +303,13 @@
   }
 
   .transcript, .error-message, .no-results {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     padding: 1rem 1.5rem;
     margin: 1.5rem auto;
     max-width: 90%;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .error-message {
@@ -315,25 +325,27 @@
   }
 
   .recipe-card {
-    background: rgba(255, 255, 255, 0.08);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
     border-radius: 15px;
     padding: 2rem;
     text-align: left;
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    border-left: 5px solid var(--card-color, #ff8c00);
   }
 
   .recipe-card:hover {
     transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
   }
 
   .recipe-card h2 {
     font-size: 1.8rem;
-    color: #ffb6c1;
+    color: var(--card-color, #ffb6c1);
     margin-top: 0;
     margin-bottom: 1rem;
-    border-bottom: 2px solid #ffb6c1;
+    border-bottom: 2px solid var(--card-color, #ffb6c1);
     padding-bottom: 0.5rem;
   }
   
@@ -356,8 +368,8 @@
   }
 
   .ingredients li {
-      background: rgba(255, 182, 193, 0.2);
-      color: #ffb6c1;
+      background: rgba(255, 255, 255, 0.1);
+      color: #ddd;
       padding: 5px 10px;
       border-radius: 20px;
       font-size: 0.9rem;

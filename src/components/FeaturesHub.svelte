@@ -1,7 +1,9 @@
 
 <script>
+  import { createEventDispatcher } from 'svelte';
   import { fly } from 'svelte/transition';
 
+  const dispatch = createEventDispatcher();
   let isOpen = false;
 
   const toggleMenu = () => {

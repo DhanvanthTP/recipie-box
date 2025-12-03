@@ -4,16 +4,9 @@
 
   const dispatch = createEventDispatcher();
 
-  let isOpen = false;
+  export let isOpen = false;
   let userInput = '';
   let messages = [];
-
-  const toggleChat = () => {
-    isOpen = !isOpen;
-    if (isOpen && messages.length === 0) {
-        addBotMessage("Namaste! I'm your Indian recipe assistant. You can ask me for 'breakfast', 'lunch', 'dinner', or 'chaat' recipes.");
-    }
-  };
 
   const handleInput = (e) => {
     if (e.key === 'Enter') {
@@ -42,6 +35,26 @@
 
   const processUserMessage = (text) => {
     const lowerText = text.toLowerCase();
+    
+    // Check for specific questions first
+    if (lowerText.includes('paneer')) {
+        addBotMessage("Paneer is a fresh, non-melting cheese common in Indian cuisine. It's made by curdling milk with a fruit or vegetable acid, like lemon juice. It has a mild, milky flavor and a dense, crumbly texture. I can show you some paneer dishes if you like!");
+        return;
+    } else if (lowerText.includes('tandoori') || lowerText.includes('tandoor')) {
+        addBotMessage("Tandoori refers to a method of cooking in a 'tandoor,' a cylindrical clay oven. Food is cooked at high temperatures, which gives it a unique, smoky flavor. The famous 'Butter Chicken' uses tandoori chicken.");
+        return;
+    } else if (lowerText.includes('spicy') || lowerText.includes('hot')) {
+        addBotMessage("If you like spicy food, I recommend trying Rogan Josh or Chole Bhature. Both are known for their delicious, hot flavors. Just say the name of the dish you want to see!");
+        return;
+    } else if (lowerText.includes('beginner') || lowerText.includes('easy') || lowerText.includes('simple')) {
+        addBotMessage("Poha is a great dish for beginners! It's a quick and easy breakfast dish that doesn't require a lot of complicated steps. Palak Paneer is also a relatively simple curry to make.");
+        return;
+    } else if (lowerText.includes('mughlai')) {
+        addBotMessage("Mughlai cuisine is a style of cooking developed in the Indian subcontinent by the imperial kitchens of the Mughal Empire. It is known for its richness and use of aromatic spices, nuts, and cream. Biryani is a classic example!");
+        return;
+    }
+
+    // If no specific question, then filter recipes
     dispatch('filter', lowerText);
 
     let response = "I'm searching for Indian recipes related to that. Here is what I found!";
@@ -51,7 +64,7 @@
     } else if (lowerText.includes('thank')) {
         response = "You're welcome! Enjoy your cooking.";
     } else if (lowerText.includes('help')) {
-        response = "You can ask me to find recipes like 'breakfast', 'lunch', 'dinner', or 'chaat'. Just type in what you're craving!";
+        response = "You can ask me to find recipes like 'breakfast', 'lunch', 'dinner', or 'chaat'. You can also ask me questions about Indian food!";
     } else if (lowerText.includes('all') || lowerText.includes('everything')) {
         response = "Showing all available Indian recipes!";
     }
@@ -61,8 +74,8 @@
 
 </script>
 
+{#if isOpen}
 <div class="chatbot-container">
-    {#if isOpen}
     <div class="chat-window">
         <div class="chat-header">
             <h3>Recipe Assistant</h3>
@@ -77,45 +90,22 @@
         <div class="chat-input">
             <input 
                 type="text" 
-                placeholder="Ask for an Indian recipe..." 
+                placeholder="Ask about Indian food..." 
                 bind:value={userInput} 
                 on:keydown={handleInput}
             />
             <button on:click={sendMessage}>Send</button>
         </div>
     </div>
-    {/if}
-    <button class="fab" on:click={toggleChat}>
-         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.94c-4.94-.46-8.5-4.52-8.5-9.44 0-5.24 4.26-9.5 9.5-9.5s9.5 4.26 9.5 9.5c0 .73-.09 1.44-.25 2.11"/><path d="M12 20.94c-4.94-.46-8.5-4.52-8.5-9.44 0-5.24 4.26-9.5 9.5-9.5s9.5 4.26 9.5 9.5c0 .73-.09 1.44-.25 2.11"/><path d="M12.5 15.5c-2 0-3.5-1.5-3.5-3.5s1.5-3.5 3.5-3.5 3.5 1.5 3.5 3.5c0 1.29-.68 2.42-1.7 3.06"/><path d="M12.5 15.5c-2 0-3.5-1.5-3.5-3.5s1.5-3.5 3.5-3.5 3.5 1.5 3.5 3.5c0 1.29-.68 2.42-1.7 3.06"/><path d="M12.5 15.5c-2 0-3.5-1.5-3.5-3.5s1.5-3.5 3.5-3.5 3.5 1.5 3.5 3.5c0 1.29-.68 2.42-1.7 3.06"/><path d="m12 15-2-2"/><path d="m12 15-2-2"/><path d="m12 15-2-2"/></svg>
-    </button>
 </div>
+{/if}
 
 <style>
     .chatbot-container {
         position: fixed;
-        bottom: 30px;
+        bottom: 110px; /* Adjusted to be above the features hub */
         right: 30px;
         z-index: 1000;
-    }
-
-    .fab {
-        background: linear-gradient(145deg, #ff8c00, #ff4500);
-        border: none;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
-        transition: all 0.3s ease;
-    }
-
-    .fab:hover {
-        transform: scale(1.1);
-        box-shadow: 0 6px 20px rgba(255, 140, 0, 0.6);
     }
 
     .chat-window {
@@ -123,7 +113,6 @@
         height: 450px;
         background-color: #2c2c2c;
         border-radius: 15px;
-        margin-bottom: 20px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         display: flex;
         flex-direction: column;
@@ -149,6 +138,7 @@
     .message {
         margin-bottom: 10px;
         max-width: 85%;
+        display: flex;
     }
 
     .message p {
@@ -159,7 +149,7 @@
     }
 
     .message.bot {
-        align-self: flex-start;
+        justify-content: flex-start;
     }
     
     .message.bot p {
@@ -168,13 +158,12 @@
     }
 
     .message.user {
-       margin-left: auto;
+       justify-content: flex-end;
     }
 
     .message.user p {
-        background: #ff8c00;
+        background: linear-gradient(145deg, #ff8c00, #ff4500);
         color: white;
-        text-align: right;
     }
 
     .chat-input {
