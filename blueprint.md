@@ -6,24 +6,28 @@ This project is a static-first web application built with Astro.js. It is design
 
 ## Implemented Features
 
-### Initial Setup
-
 *   **Framework:** Astro.js
-*   **UI Components:** Svelte
-*   **Default Page:** `src/pages/index.astro`
-*   **Default Component:** `src/components/Counter.svelte`
-*   **Styling:** Basic global styles in `src/pages/index.astro`
+*   **UI:** Svelte Components
+*   **Core Feature:** A voice-controlled recipe finder.
+*   **Voice Recognition:** Uses the Web Speech API to transcribe user voice input.
+*   **Simulated AI:** Matches keywords from voice input to a predefined list of recipes.
+*   **Fallback:** Displays dessert recipes if no match is found.
+*   **Component:** `src/components/RecipeFinder.svelte` handles all core logic and UI.
+*   **Styling:** Modern, dark-themed UI with gradient buttons, card-based layout, and custom fonts.
 
 ## Current Request
 
-**Request:** Use secure coding practices to create an error-free web app that enables users to speak their desired ingredients or a type of dish. The app will utilize generative AI to accurately transcribe and analyze the voice input, identify key components, and then generate a curated list of 3-5 suitable recipes. Each recipe in the list should clearly display its name, a concise list of primary ingredients, and a brief, appetizing description. If the voice input is unclear, or if no specific ingredients are identified, the app should instead generate a list of popular, easy-to-make dessert recipes. The user interface should include a prominent button to start and stop voice recording, along with a clear display area for the generated recipe list.
+**Request:** Make the UI extremely interactive, ensure the cursor is very catchy, and add an AI chatbot that helps you to navigate through the recipes.
 
 **Plan:**
 
-1.  **Create the UI:** I will create a new Svelte component called `RecipeFinder.svelte` that will contain the record button and the recipe display area.
-2.  **Implement Voice Recognition:** I will use the Web Speech API to capture and transcribe the user's voice input.
-3.  **Simulate Generative AI:** I will simulate the generative AI functionality by creating a predefined set of recipes. If the user's speech contains keywords from a recipe, the app will display that recipe.
-4.  **Fallback Recipes:** If no keywords are matched, a list of dessert recipes will be displayed.
-5.  **Styling:** I will add modern styling to the component to ensure a good user experience.
-6.  **Integration:** I will integrate the `RecipeFinder.svelte` component into the main `index.astro` page.
-7.  **Cleanup:** I will remove the now unused `Counter.svelte` component.
+1.  **Custom Cursor:** I will create a `CustomCursor.svelte` component to implement a visually engaging cursor that follows the user's mouse, with effects to make it stand out.
+2.  **AI Chatbot:** 
+    *   I will create a `Chatbot.svelte` component featuring a floating action button that opens a chat interface.
+    *   This chatbot will be simulated. It will recognize keywords in the user's text input (e.g., "pasta", "dessert", "show me chicken recipes").
+    *   Based on the keywords, the chatbot will provide responses and programmatically filter the recipe list displayed in the main `RecipeFinder` component.
+3.  **Enhanced Interactivity:**
+    *   I will add subtle animations and transitions to the recipe cards and buttons to make them feel more responsive and engaging.
+    *   I will refine the visual feedback for user actions, such as when the voice recognition is active.
+4.  **Component Communication:** I will use Svelte's component event system to allow the `Chatbot` to communicate the user's search query to the `RecipeFinder` component.
+5.  **Integration:** I will update `index.astro` to include the new `CustomCursor` and `Chatbot` components, ensuring they are loaded for client-side interactivity.
