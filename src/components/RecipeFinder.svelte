@@ -1,68 +1,104 @@
 
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, createEventDispatcher } from 'svelte';
+  import { fly, fade } from 'svelte/transition';
 
   let recognition;
   let listening = false;
   let transcript = '';
   let recipes = [];
+  let allRecipesMaster = [];
   let error = null;
 
-  const allRecipes = [
+  const indianRecipes = [
+    // Breakfast
     {
-      name: 'Spaghetti Carbonara',
-      ingredients: ['Spaghetti', 'Eggs', 'Parmesan Cheese', 'Pancetta', 'Black Pepper'],
-      description: 'A classic Roman pasta dish that comes together in minutes. Creamy, savory, and deeply satisfying.',
-      keywords: ['pasta', 'carbonara', 'spaghetti', 'italian']
+      name: 'Poha',
+      ingredients: ['Flattened Rice', 'Onion', 'Peanuts', 'Turmeric', 'Lemon'],
+      description: 'A light and fluffy breakfast dish from Maharashtra, made with flattened rice, spices, and peanuts.',
+      keywords: ['breakfast', 'poha', 'indian', 'vegetarian', 'quick', 'light']
     },
     {
-      name: 'Chicken Tikka Masala',
-      ingredients: ['Chicken', 'Yogurt', 'Tomato Sauce', 'Garam Masala', 'Cream'],
-      description: 'A beloved Indian curry with tender chicken in a creamy, spiced tomato sauce. Perfect with naan or rice.',
-      keywords: ['chicken', 'curry', 'indian', 'masala']
+      name: 'Aloo Paratha',
+      ingredients: ['Whole Wheat Flour', 'Potatoes', 'Spices', 'Ghee', 'Cilantro'],
+      description: 'A popular North Indian breakfast of unleavened flatbread stuffed with a spiced potato mixture.',
+      keywords: ['breakfast', 'paratha', 'potato', 'aloo', 'indian', 'north indian', 'vegetarian']
     },
     {
-      name: 'Classic Beef Tacos',
-      ingredients: ['Ground Beef', 'Taco Shells', 'Lettuce', 'Tomato', 'Cheese'],
-      description: 'A fun, customizable meal for any night of the week. Everyone loves a good taco night!',
-      keywords: ['tacos', 'beef', 'mexican', 'ground beef']
+      name: 'Masala Dosa',
+      ingredients: ['Rice', 'Lentils', 'Potato', 'Onion', 'Spices'],
+      description: 'A crispy, savory crepe from South India, filled with a delicious spiced potato filling.',
+      keywords: ['breakfast', 'dosa', 'masala dosa', 'south indian', 'vegetarian', 'crispy']
     },
-    {
-      name: 'Avocado Toast',
-      ingredients: ['Bread', 'Avocado', 'Red Pepper Flakes', 'Lemon Juice', 'Salt'],
-      description: 'A simple, trendy, and delicious breakfast or snack. Easy to customize with your favorite toppings.',
-      keywords: ['avocado', 'toast', 'breakfast', 'vegetarian']
-    },
-     {
-      name: 'Mushroom Risotto',
-      ingredients: ['Arborio Rice', 'Mushrooms', 'Vegetable Broth', 'Onion', 'Parmesan Cheese'],
-      description: 'A creamy and elegant Italian rice dish, perfect for a cozy dinner. The earthy mushrooms make it incredibly flavorful.',
-      keywords: ['mushroom', 'risotto', 'rice', 'italian']
-    }
-  ];
 
-  const dessertRecipes = [
+    // Lunch
     {
-      name: 'Chocolate Chip Cookies',
-      ingredients: ['Flour', 'Butter', 'Sugar', 'Chocolate Chips', 'Eggs'],
-      description: 'The ultimate classic dessert. Warm, gooey, and impossible to resist. Perfect with a glass of milk.',
-      keywords: ['dessert', 'cookies', 'chocolate']
+      name: 'Palak Paneer',
+      ingredients: ['Spinach', 'Paneer', 'Onion', 'Tomato', 'Spices'],
+      description: 'A classic vegetarian dish with soft paneer cubes in a creamy, mildly spiced spinach gravy.',
+      keywords: ['lunch', 'dinner', 'palak paneer', 'paneer', 'spinach', 'vegetarian', 'curry']
     },
     {
-      name: 'Classic Brownies',
-      ingredients: ['Chocolate', 'Butter', 'Flour', 'Sugar', 'Eggs'],
-      description: 'Fudgy, chewy, and intensely chocolatey. A guaranteed crowd-pleaser for any occasion.',
-      keywords: ['dessert', 'brownies', 'chocolate']
+      name: 'Chole Bhature',
+      ingredients: ['Chickpeas', 'Flour', 'Yogurt', 'Spices', 'Tomato'],
+      description: 'A spicy chickpea curry served with fluffy, deep-fried bread. A hearty and beloved meal from Punjab.',
+      keywords: ['lunch', 'dinner', 'chole bhature', 'chickpea', 'punjabi', 'indian']
     },
     {
-      name: 'Apple Crumble',
-      ingredients: ['Apples', 'Oats', 'Flour', 'Butter', 'Cinnamon'],
-      description: 'A comforting and rustic dessert with warm, spiced apples under a crunchy oat topping. Serve with vanilla ice cream.',
-      keywords: ['dessert', 'apple', 'crumble']
+      name: 'Biryani',
+      ingredients: ['Basmati Rice', 'Chicken/Mutton/Veg', 'Yogurt', 'Saffron', 'Spices'],
+      description: 'A fragrant and flavorful rice dish with layers of meat or vegetables, cooked with aromatic spices.',
+      keywords: ['lunch', 'dinner', 'biryani', 'rice', 'chicken', 'mutton', 'indian']
+    },
+
+    // Dinner
+    {
+      name: 'Butter Chicken',
+      ingredients: ['Chicken', 'Tomato', 'Butter', 'Cream', 'Cashews'],
+      description: 'A rich and creamy curry with tender tandoori chicken in a buttery tomato sauce. A global favorite.',
+      keywords: ['dinner', 'butter chicken', 'chicken', 'curry', 'punjabi', 'north indian']
+    },
+    {
+      name: 'Dal Makhani',
+      ingredients: ['Black Lentils', 'Kidney Beans', 'Butter', 'Cream', 'Tomato'],
+      description: 'A creamy, slow-cooked lentil dish from Punjab, known for its rich texture and flavor.',
+      keywords: ['dinner', 'dal makhani', 'dal', 'lentils', 'vegetarian', 'punjabi']
+    },
+    {
+      name: 'Rogan Josh',
+      ingredients: ['Lamb/Mutton', 'Yogurt', 'Fennel Seeds', 'Ginger', 'Spices'],
+      description: 'An aromatic lamb curry from Kashmir with a rich, red gravy and fall-off-the-bone meat.',
+      keywords: ['dinner', 'rogan josh', 'lamb', 'mutton', 'curry', 'kashmiri']
+    },
+
+    // Chaat (Snacks)
+    {
+      name: 'Pani Puri / Golgappa',
+      ingredients: ['Semolina', 'Potatoes', 'Chickpeas', 'Tamarind', 'Mint'],
+      description: 'A popular street food snack consisting of hollow, crispy balls filled with spicy tamarind water and fillings.',
+      keywords: ['chaat', 'snack', 'pani puri', 'golgappa', 'street food', 'vegetarian']
+    },
+    {
+      name: 'Samosa Chaat',
+      ingredients: ['Samosa', 'Yogurt', 'Tamarind Chutney', 'Mint Chutney', 'Onion'],
+      description: 'Crushed samosas topped with yogurt, chutneys, and spices. A delicious and tangy explosion of flavors.',
+      keywords: ['chaat', 'snack', 'samosa', 'street food', 'vegetarian']
+    },
+    {
+      name: 'Bhel Puri',
+      ingredients: ['Puffed Rice', 'Onion', 'Tomato', 'Tamarind Chutney', 'Sev'],
+      description: 'A savory and tangy snack made with puffed rice, vegetables, and a mix of chutneys.',
+      keywords: ['chaat', 'snack', 'bhel puri', 'street food', 'vegetarian', 'light']
     }
-  ];
+];
+
+
+  const dessertRecipes = indianRecipes.filter(r => r.keywords.includes('dessert')); // Will be empty now, but logic remains
 
   onMount(() => {
+    allRecipesMaster = [...indianRecipes];
+    recipes = allRecipesMaster;
+    
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
       recognition = new SpeechRecognition();
@@ -82,11 +118,10 @@
 
       recognition.onerror = (event) => {
         if (event.error === 'no-speech') {
-            error = "I didn't catch that. Please try again. Showing dessert recipes as a fallback.";
+            error = "I didn't catch that. Please try again.";
         } else {
-            error = `Error during recognition: ${event.error}. Showing dessert recipes as a fallback.`;
+            error = `Error during recognition: ${event.error}.`;
         }
-        recipes = dessertRecipes;
         listening = false;
       };
 
@@ -94,7 +129,7 @@
         listening = false;
       };
     } else {
-      error = "Speech recognition is not supported in this browser. Please use Chrome or Safari.";
+      error = "Speech recognition is not supported in this browser.";
     }
   });
 
@@ -108,24 +143,39 @@
 
   function findRecipes(text) {
     const lowerText = text.toLowerCase();
-    const foundRecipes = allRecipes.filter(recipe => 
+    
+    if (lowerText.includes('all') || lowerText.includes('everything')) {
+        recipes = allRecipesMaster;
+        error = null;
+        return;
+    }
+
+    const foundRecipes = allRecipesMaster.filter(recipe => 
       recipe.keywords.some(kw => lowerText.includes(kw))
     );
 
     if (foundRecipes.length > 0) {
-      recipes = foundRecipes.slice(0, 5);
+      recipes = foundRecipes;
+      error = null;
     } else {
-      recipes = dessertRecipes;
-      error = "I couldn't find a match for that. Here are some popular dessert recipes instead!";
+      recipes = [];
+      error = "Sorry, I couldn't find any Indian dishes matching your search. Try asking for 'breakfast', 'lunch', 'dinner', or 'chaat'.";
     }
   }
+
+  // This function will be called from the parent component (index.astro)
+  export const filterFromChat = (text) => {
+      transcript = text; // Update transcript to show what was searched
+      findRecipes(text);
+  }
+
 </script>
 
 <main>
   <div class="container">
     <div class="title-container">
-      <h1>Voice-to-Recipe</h1>
-      <p>Speak your desired ingredients or dish, and let AI find your next meal.</p>
+      <h1>Indian Recipe Finder</h1>
+      <p>Your AI assistant for discovering authentic Indian cuisine.</p>
     </div>
 
     <div class="button-container">
@@ -139,7 +189,7 @@
 
     {#if transcript}
       <div class="transcript">
-        <p><strong>You said:</strong> "{transcript}"</p>
+        <p><strong>Searched for:</strong> "{transcript}"</p>
       </div>
     {/if}
 
@@ -150,8 +200,8 @@
     {/if}
 
     <div class="recipe-list">
-      {#each recipes as recipe}
-        <div class="recipe-card">
+      {#each recipes as recipe (recipe.name)}
+        <div class="recipe-card" in:fly={{ y: 20, duration: 300 }} out:fade={{ duration: 200 }}>
           <h2>{recipe.name}</h2>
           <div class="ingredients">
             <strong>Primary Ingredients:</strong>
@@ -165,6 +215,11 @@
         </div>
       {/each}
     </div>
+     {#if recipes.length === 0 && !error}
+        <div class="no-results">
+            <p>Explore recipes by speaking or using the chatbot. Try saying "Show me breakfast" or "Find chicken dishes".</p>
+        </div>
+    {/if}
   </div>
 </main>
 
@@ -198,7 +253,7 @@
     font-weight: 700;
     color: #ffffff;
     margin-bottom: 0.5rem;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 105, 180, 0.5);
+    text-shadow: 0 0 10px rgba(255, 165, 0, 0.5), 0 0 20px rgba(255, 69, 0, 0.5);
   }
 
   .title-container p {
@@ -212,7 +267,7 @@
   }
 
   button {
-    background: linear-gradient(145deg, #ff69b4, #ff1493);
+    background: linear-gradient(145deg, #ff8c00, #ff4500);
     border: none;
     border-radius: 50px;
     color: white;
@@ -224,29 +279,14 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
     position: relative;
     overflow: hidden;
   }
 
-  button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: all 0.4s;
-  }
-
-  button:hover::before {
-    left: 100%;
-  }
-
   button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6);
+    box-shadow: 0 6px 20px rgba(255, 140, 0, 0.6);
   }
 
   button.listening {
@@ -254,10 +294,10 @@
     box-shadow: 0 4px 15px rgba(72, 198, 239, 0.4);
   }
 
-  .transcript, .error-message {
+  .transcript, .error-message, .no-results {
     background: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    padding: 0.5rem 1rem;
+    padding: 1rem 1.5rem;
     margin: 1.5rem auto;
     max-width: 90%;
   }
@@ -284,7 +324,7 @@
   }
 
   .recipe-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) scale(1.02);
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
   }
 

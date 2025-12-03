@@ -1,9 +1,11 @@
 ---
-// Component Imports
 import RecipeFinder from '../components/RecipeFinder.svelte';
+import CustomCursor from '../components/CustomCursor.svelte';
+import Chatbot from '../components/Chatbot.svelte';
+import YouTubeSummarizer from '../components/YouTubeSummarizer.svelte';
 
-// Full Astro Component Syntax:
-// https://docs.astro.build/basics/astro-components/
+const title = "Voice-to-Recipe AI";
+const description = "An AI-powered recipe finder that suggests meals based on your voice commands or text queries.";
 ---
 
 <html lang="en">
@@ -11,12 +13,18 @@ import RecipeFinder from '../components/RecipeFinder.svelte';
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
+        <meta name="description" content={description} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>Voice-to-Recipe AI</title>
+        <title>{title}</title>
 	</head>
 	<body>
+        <CustomCursor client:load />
+
 		<main>
 			<RecipeFinder client:load />
 		</main>
+
+        <Chatbot client:load />
+        <YouTubeSummarizer client:load />
 	</body>
 </html>
